@@ -16,17 +16,17 @@
       <p class="texto">Nasa Api te permite ve las imagenes mas alucinantes capturadas en las misiones de la NASA.</p>
       <p class="texto">Busca tu planeta favorito y empeza a ver estas fotos.</p>
       <div class="formulario">
-        <form class="form">
+        <form id="form" action="mostrarResultado()">
           <label for="texto">Ingresa en texto a buscar</label>
-          <input type="text" name="texto" value="">
+          <input type="text" name="texto" id="texto">
           <br>
           <label for="media_type">Que deseas encontrar?</label>
-          <select class="" name="media_type">
+          <select class="" name="media_type" id="media_type">
             <option value="video">Video</option>
             <option value="photo">Foto</option>
           </select>
           <br>
-          <button type="button" name="consultar" onclick="mostrarmsj( )">Buscar</button>
+          <button type="button" name="consultar" onclick="mostrarResultado()">Buscar</button>
         </form>
       </div>
 

@@ -40,6 +40,10 @@ footer p{
   text-align: center;
 }
 
+button[name='consultar']{
+  margin-top: 5%;
+}
+
 #reintentar{
   display: none;
 }
