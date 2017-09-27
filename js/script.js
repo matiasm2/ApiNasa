@@ -1,6 +1,4 @@
-
 function mostrarResultado(){
-  var url = "https://images-api.nasa.gov/search?q=";
   generarUrl();
 }
 
@@ -12,15 +10,36 @@ function ejecutarConsulta(url){
       //console.log(JSON.stringify(result));
       result.collection.items.forEach(function(recurso){
         //console.log(recurso);
-        var p = '<h3>Titulo: '+recurso.data[0].title+'</h3>';
-        p += '<h3>nasa_id: '+recurso.data[0].nasa_id+'</h3>';
-        p += '<img src='+recurso.links[0].href+' alt='+recurso.data[0].title+' width=100%>';
-        p += '<br><br>';
-        $(p).appendTo('#resultados');
+        if (recurso.data[0].media_type=='image'){
+          var p = '<h3>Titulo: '+recurso.data[0].title+'</h3>';
+          p += '<img src='+recurso.links[0].href+' alt='+recurso.data[0].title+' width=100%>';
+          p += '<br><br>';
+          $(p).appendTo('#resultados');
+        } if (recurso.data[0].media_type=='video'){
+          var p = '<h3>Titulo: '+recurso.data[0].title+'</h3>';
+          getUrlVideo(recurso.data[0].nasa_id);
+          p +='<iframe id="'+recurso.data[0].nasa_id+'" type="text/html" width="100%"></iframe>';
+          p += '<br><br>';
+          $(p).appendTo('#resultados');
+        }
       });
     }
   });
 }
+
+function getUrlVideo(nasa_id){
+  var url = 'https://images-api.nasa.gov/asset/'+nasa_id;
+  var urlVideo = "";
+  $.ajax({
+    url: url,
+    success: function(result){
+      urlVideo = result.collection.items[1].href;
+      $('#'+nasa_id).attr('src',urlVideo);
+    }
+  });
+  return urlVideo;
+}
+
 
 function generarUrl(){
   var url = "https://images-api.nasa.gov/search?q=";
