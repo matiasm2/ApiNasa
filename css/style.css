@@ -5,8 +5,13 @@ body{
   font-family: 'Open Sans', Roboto;
 }
 header{
+  display: inline-flex;
   background-color: #1976d2;
   color: #fff;
+}
+
+header img{
+  width: 20%;
 }
 
 footer{
@@ -22,10 +27,13 @@ footer p{
 }
 
 .titulo{
+  height: 100%;
+  width: 60%;
   margin: 0px;
   padding: 5%;
   text-align: center;
 }
+
 .contenido{
   padding-left: 10%;
   padding-right: 10%;
@@ -46,6 +54,10 @@ button[name='consultar']{
 
 #reintentar{
   display: none;
+}
+
+#resultados a{
+  margin: 1%;
 }
 
 /* Moviles en horizontal o tablets en vertical */
