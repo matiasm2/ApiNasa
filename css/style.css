@@ -5,6 +5,7 @@ body{
   font-family: 'Open Sans', Roboto;
 }
 header{
+  width: 100%;
   display: inline-flex;
   background-color: #1976d2;
   color: #fff;
@@ -62,6 +63,10 @@ button[name='consultar']{
 
 /* Moviles en horizontal o tablets en vertical */
 @media (min-width: 768px){
+  header img{
+    width: 10%;
+  }
+
   footer{
     margin-top: 100%;
   }

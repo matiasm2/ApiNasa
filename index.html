@@ -18,7 +18,7 @@
       <p class="texto">Nasa Api te permite ve las imagenes mas alucinantes capturadas en las misiones de la NASA.</p>
       <p class="texto">Busca tu planeta favorito y empeza a ver estas fotos.</p>
       <div class="formulario">
-        <form id="form" action="mostrarResultado()">
+        <form id="form">
           <label for="texto">Ingresa en texto a buscar</label>
           <input type="text" name="texto" id="texto">
           <br>
@@ -29,6 +29,17 @@
           </select>
           <br>
           <button type="button" name="consultar" onclick="mostrarResultado()">Buscar</button>
+
+          <br><br>
+
+          <h4>Astronomy Picture of the Day</h4>
+          <label for="fecha">Fecha: (default hoy)</label>
+          <input type="date" id="fecha" value="">
+          <label for="hd">HD</label>
+          <fieldset id="hd">
+            <input type="checkbox" id="hdchk" value="true">
+          </fieldset>
+          <button type="button" onclick="mostrarResultadoAPOD()">Ver</button>
         </form>
       </div>
 
