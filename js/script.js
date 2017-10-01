@@ -108,11 +108,16 @@ function ejecutarConsulta(url){
 function enviarMail() {
   var mailto = 'mailto:'+$('#email').val();
   mailto += '?subject=Mira esta imagen de la nasa';
+  var msg = '';
+  if ($('#nombre').val() != ""){
+    msg += $('#nombre').val() + 'o ';
+  }
+  msg += $('#emisor').val() + ' te ha recomendado que veas este multimedia:';
   if (getParameterByName('nasa_id')){
-    mailto += '&body=vermedia.html?nasa_id='+getParameterByName("nasa_id");
+    mailto += '&body='+msg+' vermedia.html?nasa_id='+getParameterByName("nasa_id");
   } else {
 
-    mailto += '&body=vermedia.html?fecha='+getParameterByName('fecha');
+    mailto += '&body='+msg+' vermedia.html?fecha='+getParameterByName('fecha');
   }
   $('<a href="' + mailto + '">click</a> id="correo"').appendTo('.contenido');
   $('#correo').click();
