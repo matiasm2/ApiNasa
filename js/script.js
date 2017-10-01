@@ -11,11 +11,38 @@ Envio de correo.
 
 function mostrarResultado(){
   if(validarCampo()){
+    consultarLocalStorage();
     generarConsulta($('#texto').val());
+
   }
 }
 function mostrarResultadoAPOD(){
+    consultarLocalStorage();
     generarConsultaAPOD('hoy');
+}
+
+function consultarLocalStorage(){
+    if (localStorage.getItem('lStorage')){
+      var busqueda = {
+        texto : $('#texto').val(),
+        media_type : $('#media_type').val()
+      }
+
+      var lStorage = JSON.parse(localStorage.getItem('lStorage'));
+      lStorage.busquedas.push(busqueda);
+      console.log(lStorage);
+      localStorage.setItem('lStorage', JSON.stringify(lStorage));
+
+    } else {
+      var busqueda = {
+        texto : $('#texto').val(),
+        media_type : $('#media_type').val()
+      }
+      var lStorage = {
+        busquedas : [busqueda]
+      }
+      localStorage.setItem('lStorage', JSON.stringify(lStorage));
+    }
 }
 
 function ejecutarConsultaAPOD(url){
