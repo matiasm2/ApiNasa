@@ -7,20 +7,27 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Fq_H03limrwMh8xlpofRKQ2fdg5vHAo&callback=cargarMapa">
+    </script>
+
   </head>
   <body>
     <header>
       <img class="logo" src="https://api.nasa.gov/images/logo.png" alt="NASA">
       <h3 class="titulo">NASA Images</h3>
       <img class="logo" src="https://api.nasa.gov/images/logo.png" alt="NASA">
-    </header>
+    </header>|
     <div class="contenido">
-      <h3>Compartir</h3>
-      <form action="javascript:enviarMail()" method="post">
-        <label for="email">Correo electronico</label>
-        <input type="email" name="email" id="email" value="" required>
-        <button type="submit">Compartir</button>
-      </form>
+      <h3>Nosotros</h3>
+      <p>Somos una empresa dedicada al dearrollo de software de alta calidad.</p>
+      <p>Nuestras oficinas se encuentran en la ciudad de La Plata, Argentina.</p>
+      <p>Contactate con nosotros enviando un correo a <a href="mailto:nosotros@apinasa.com">nosotros@apinasa.com</a>.</p>
+
+      <div id="posicion">
+
+      </div>
+
     </div>
 
     <footer>

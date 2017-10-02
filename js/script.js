@@ -9,6 +9,18 @@ Envio de correo.
 
 */
 
+function cargarMapa(){
+      var laplata = {lat: -34.933333333333, lng: -57.95};
+      var map = new google.maps.Map(document.getElementById('posicion'), {
+        zoom: 15,
+        center: laplata
+      });
+      var marker = new google.maps.Marker({
+        position: laplata,
+        map: map
+      });
+}
+
 function mostrarResultado(){
   if(validarCampo()){
     consultarLocalStorage();
