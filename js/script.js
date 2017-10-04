@@ -52,38 +52,63 @@ function cargarMapaGeo() {
 
 function mostrarResultado(){
   if(validarCampo()){
-    consultarLocalStorage();
     generarConsulta($('#texto').val());
 
   }
 }
 function mostrarResultadoAPOD(){
-    consultarLocalStorage();
     generarConsultaAPOD('hoy');
 }
 
-function consultarLocalStorage(){
+function agregarHistorial(){
+    if (localStorage.getItem('lStorage')){
+      var lStorage = JSON.parse(localStorage.getItem('lStorage'));
+      //console.log(lStorage);
+
+      var msg = '<h4>Ultimas consultas:</h4>'
+      $(msg).appendTo('.historial');
+      lStorage.busquedas.forEach(function(item){
+        //console.log(item);
+        var func = "generarConsulta('";
+        func += item.texto + "');";
+        var etiqueta = '<a href="#" onclick="'+func+'">'+item.texto+'</a>';
+        $(etiqueta).appendTo('.historial');
+      });
+
+
+      var boton = '<button type="button" onclick="reiniciarLocalStorage()">Borrar historial</button>';
+      $(boton).appendTo('.historial');
+    }
+}
+
+
+function consultarLocalStorage(texto, apod){
     if (localStorage.getItem('lStorage')){
       var busqueda = {
-        texto : $('#texto').val(),
-        media_type : $('#media_type').val()
+        texto : texto,
+        apod : apod
       }
 
       var lStorage = JSON.parse(localStorage.getItem('lStorage'));
       lStorage.busquedas.push(busqueda);
-      console.log(lStorage);
+      //console.log(lStorage);
       localStorage.setItem('lStorage', JSON.stringify(lStorage));
 
     } else {
       var busqueda = {
-        texto : $('#texto').val(),
-        media_type : $('#media_type').val()
+        texto : texto,
+        apod : apod
       }
       var lStorage = {
         busquedas : [busqueda]
       }
       localStorage.setItem('lStorage', JSON.stringify(lStorage));
     }
+}
+
+function reiniciarLocalStorage() {
+  localStorage.removeItem('lStorage');
+
 }
 
 function ejecutarConsultaAPOD(url){
@@ -93,7 +118,7 @@ function ejecutarConsultaAPOD(url){
   $.ajax({
     url: url,
     success: function(result){
-
+      consultarLocalStorage(result.date, true);
       var p = '<h3>Titulo: '+result.title+'</h3>';
       if(result.media_type == "video") {
         p +='<iframe src='+result.url+' type="text/html" width="100%"></iframe>';
@@ -169,6 +194,7 @@ function ejecutarConsulta(url){
           agregarEtiquetas(recurso.data[0].keywords);
         }
       });
+      $('.historial').html('');
     }
   });
 }
@@ -217,6 +243,7 @@ function validarCampo(){
 function generarConsulta(texto){
   var url = "https://images-api.nasa.gov/search?q=";
   console.log()
+  consultarLocalStorage(texto, false);
   if ($('#media_type').val() != undefined){
     url += texto+'&media_type='+$('#media_type').val();
   } else {
@@ -252,6 +279,7 @@ function restaurar(){
   $('#resultados').html('');
   $('.formulario').show();
   $('#reintentar').hide();
+  agregarHistorial();
 }
 
 function getParameterByName(name) {
@@ -259,6 +287,7 @@ function getParameterByName(name) {
 }
 
 $(document).ready(function() {
+    agregarHistorial();
     if (getParameterByName("nasa_id")){
       console.log('nasa_id: '+getParameterByName("nasa_id"));
       generarConsulta(getParameterByName("nasa_id"));
