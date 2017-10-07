@@ -17,7 +17,8 @@ function cargarMapa(){
       });
       var marker = new google.maps.Marker({
         position: laplata,
-        map: map
+        map: map,
+        title: 'Nosotros'
       });
 }
 
@@ -56,6 +57,7 @@ function mostrarResultado(){
 
   }
 }
+
 function mostrarResultadoAPOD(){
     generarConsultaAPOD('hoy');
 }
@@ -107,6 +109,7 @@ function consultarLocalStorage(texto, apod){
 }
 
 function reiniciarLocalStorage() {
+  $('.historial').html('');
   localStorage.removeItem('lStorage');
 
 }
@@ -118,7 +121,7 @@ function ejecutarConsultaAPOD(url){
   $.ajax({
     url: url,
     success: function(result){
-      consultarLocalStorage(result.date, true);
+      //consultarLocalStorage(result.date, true);
       var p = '<h3>Titulo: '+result.title+'</h3>';
       if(result.media_type == "video") {
         p +='<iframe src='+result.url+' type="text/html" width="100%"></iframe>';
@@ -136,64 +139,100 @@ function ejecutarConsultaAPOD(url){
   });
 }
 
-function agregarImg(titulo, autor, enlace){
-  var p = '<h3>Titulo: '+titulo+'</h3>';
-  p += '<h4>Autor: '+autor+'</h4>';
+function agregarImg(titulo, autor, enlace, nasa_id){
+  var p = '<h3>'+titulo+' - '+autor+'</h3>';
+  /*  var p = '<h3>Titulo: '+titulo+'</h3>';
+  p += '<h4>Autor: '+autor+'</h4>';*/
   p += '<img src='+enlace+' alt='+titulo+' width=100%>';
-  $(p).appendTo('#resultados');
+  var tags = '<div class="tag'+nasa_id+'"></div>';
+  var div = '<div class="elemento">'+p+tags+'</div>';
+  $(div).appendTo('#resultados');
 }
 
 function agregarVideo(titulo, autor, nasa_id){
   var p = '<h3>Titulo: '+titulo+'</h3>';
   p += '<h4>Autor: '+autor+'</h4>';
   p +='<iframe id="'+nasa_id+'" type="text/html" width="100%"></iframe>';
-  $(p).appendTo('#resultados');
+  var tags = '<div class="tag'+nasa_id+'"></div>';
+  var div = '<div class="elemento">'+p+tags+'</div>';
+  $(div).appendTo('#resultados');
   agregarUrlVideo(nasa_id);
 }
 
 function agregarCompartir(nasa_id){
   var input = '<input type="hidden" name="nasa_id" value="'+nasa_id+'">'
-  var boton = '<button type="submit">Compartir</button>';
+  var boton = '<button class="btncompartir" type="submit">Compartir</button>';
   var form = '<form action="compartir.html" method="get">'+input+boton+'</form>';
-  $(form).appendTo('#resultados');
+  $(form).appendTo('.tag'+nasa_id);
 }
 
 function agregarCompartirAPOD(fecha){
   var input = '<input type="hidden" name="fecha" value="'+fecha+'">'
-  var boton = '<button type="submit">Compartir</button>';
+  var boton = '<button class="btncompartir" type="submit">Compartir</button>';
   var form = '<form action="compartir.html" method="get">'+input+boton+'</form>';
   $(form).appendTo('#resultados');
 }
 
-function agregarEtiquetas(keywords){
-  var msg = '<p>Mas imagenes acerca:</p>'
-  $(msg).appendTo('#resultados');
+function agregarEtiquetas(nasa_id, keywords){
+  var msg = '<p class="masimg" >Mas imagenes acerca:</p>'
+  $(msg).appendTo('.tag'+nasa_id);
   keywords.forEach(function(item){
     var func = "generarConsulta('";
     func += item + "');";
     var etiqueta = '<a href="#" onclick="'+func+'">'+item+'</a>';
-    $(etiqueta).appendTo('#resultados');
+    $(etiqueta).appendTo('.tag'+nasa_id);
   });
-  var linea = '<hr width="75%">';
-  linea += '<br>';
-  $(linea).appendTo('#resultados');
+}
+
+function agregarBtnBuscarMas(url){
+  var js = "javascript:buscarMas('"+url+"')";
+  var boton = '<button type="button" onclick="'+js+'">Buscar Mas</button>';
+  $(boton).appendTo('#resultados');
+}
+
+function buscarMas(url){
+  $.ajax({
+    url: url,
+    success: function(result){
+      result.collection.items.forEach(function(recurso){
+          if (recurso.data[0].media_type=='image'){
+            agregarImg(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.links[0].href, recurso.data[0].nasa_id);
+            agregarCompartir(recurso.data[0].nasa_id);
+            agregarEtiquetas(recurso.data[0].nasa_id, recurso.data[0].keywords);
+          } if (recurso.data[0].media_type=='video'){
+            agregarVideo(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.data[0].nasa_id);
+            agregarCompartir(recurso.data[0].nasa_id);
+            agregarEtiquetas(recurso.data[0].nasa_id, recurso.data[0].keywords);
+          }
+      });
+      $('.historial').html('');
+    }
+  });
 }
 
 function ejecutarConsulta(url){
   $.ajax({
     url: url,
     success: function(result){
+      var contador = 0
       result.collection.items.forEach(function(recurso){
-        if (recurso.data[0].media_type=='image'){
-          agregarImg(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.links[0].href);
-          agregarCompartir(recurso.data[0].nasa_id);
-          agregarEtiquetas(recurso.data[0].keywords);
-        } if (recurso.data[0].media_type=='video'){
-          agregarVideo(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.data[0].nasa_id);
-          agregarCompartir(recurso.data[0].nasa_id);
-          agregarEtiquetas(recurso.data[0].keywords);
+        if (contador < 10){
+          if (recurso.data[0].media_type=='image'){
+            agregarImg(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.links[0].href, recurso.data[0].nasa_id);
+            agregarCompartir(recurso.data[0].nasa_id);
+            agregarEtiquetas(recurso.data[0].nasa_id, recurso.data[0].keywords);
+          } if (recurso.data[0].media_type=='video'){
+            agregarVideo(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.data[0].nasa_id);
+            agregarCompartir(recurso.data[0].nasa_id);
+            agregarEtiquetas(recurso.data[0].nasa_id, recurso.data[0].keywords);
+          }
+          contador++;
         }
       });
+      if (contador = 10){
+        agregarBtnBuscarMas(url);
+      }
+
       $('.historial').html('');
     }
   });
@@ -213,9 +252,8 @@ function enviarMail() {
 
     mailto += '&body='+msg+' vermedia.html?fecha='+getParameterByName('fecha');
   }
-  $('<a href="' + mailto + '">click</a> id="correo"').appendTo('.contenido');
-  $('#correo').click();
-  $('#correo').remove();
+  //$('<a href="' + mailto + '">click</a> id="correo"').appendTo('.contenido');
+  window.location.assign(mailto);
 
 }
 
@@ -258,7 +296,7 @@ function generarConsulta(texto){
 }
 
 function generarConsultaAPOD(fecha){
-  var url = "https://api.nasa.gov/planetary/apod?api_key=NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo";
+  var url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
   if ($('#hdchk').is(':checked')){
     url += '&hd=true';
   } if ($('fecha').val() != undefined){
@@ -269,6 +307,7 @@ function generarConsultaAPOD(fecha){
 
   console.log(url);
   ejecutarConsultaAPOD(url);
+  $('.historial').html('');
   $('.texto').hide();
   $('#resultados').html('');
   $('.formulario').hide();

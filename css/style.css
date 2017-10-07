@@ -1,15 +1,47 @@
 body{
   margin: 0px;
-  background-color: #fff;
+  background-color: #212121;
   color: #212121;
   font-family: 'Open Sans', Roboto;
 }
 header{
   width: 100%;
-  display: inline-flex;
+  display: block;
   background-color: #1976d2;
   color: #fff;
+  text-align: center;
 }
+
+header img{
+  width: 20%;
+}
+
+header ul{
+  padding-left: 0%;
+  display: block;
+  list-style: none;
+}
+
+header ul li{
+  padding : 3%;
+  display: inline;
+}
+
+header a:link  {
+ text-decoration:none;
+}
+
+.elemento div{
+  text-align: center;
+}
+
+#formcomp label{
+  display: inline-block;
+}
+#formcomp input{
+  display: inline-block;
+}
+
 #posicion {
   height: 400px;
   width: 100%;
@@ -20,12 +52,10 @@ header{
   margin: 1%;
 }
 
-header img{
-  width: 20%;
-}
+
 
 footer{
-  margin-top: 10%;
+  margin-top: 0%;
   background-color: #1976d2;
   color: #fff;
   text-align: center;
@@ -37,6 +67,7 @@ footer p{
 }
 
 .titulo{
+  display: none;
   height: 100%;
   width: 60%;
   margin: 0px;
@@ -45,8 +76,14 @@ footer p{
 }
 
 .contenido{
-  padding-left: 10%;
-  padding-right: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: #fff;
+  padding: 3%;
+}
+
+.contenido p{
+  margin-top: 0px;
 }
 
 .formulario{
@@ -56,6 +93,31 @@ footer p{
   padding: 5%;
   border-radius: 25px;
   text-align: center;
+}
+
+.masimg{
+  padding-top: 3%;
+  margin: 3%;
+}
+.historial{
+  text-align: center;
+}
+
+.historial h4{
+  margin: 3%;
+}
+button{
+  font-family: 'Open Sans', Roboto;
+    padding: 3%;
+    border-radius: 2px;
+    border: 0px;
+    background-color: #1976d2;
+    color: #ffffff;
+    margin: 3%;
+}
+
+.historial button{
+  margin-left: 3%;
 }
 
 button[name='consultar']{
@@ -70,10 +132,27 @@ button[name='consultar']{
   margin: 1%;
 }
 
+#resultados{
+  text-align: center;
+}
+
 /* Moviles en horizontal o tablets en vertical */
 @media (min-width: 768px){
+  header {
+    display: inline-flex;
+  }
   header img{
-    width: 10%;
+    width: 50%;
+  }
+  button{
+      padding: 1%;
+      margin: 1%;
+  }
+
+  header ul{
+    display: inline-flex;
+    margin: 5%;
+    color: #fff;
   }
 
   footer{
@@ -85,6 +164,7 @@ button[name='consultar']{
   }
 
   .titulo{
+    display: inline;
     padding: 3%;
     text-align: left;
   }
