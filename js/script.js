@@ -159,6 +159,14 @@ function agregarVideo(titulo, autor, nasa_id){
   agregarUrlVideo(nasa_id);
 }
 
+function agregarPrecio(nasa_id, title){
+  var input = '<input type="hidden" name="nasa_idc" value="'+nasa_id+'">'
+  var input2 = '<p>Precio $'+ (title.length * 10).toString() +'</p>'
+  var boton = '<button class="btncompartir" type="submit">Agregar al carro</button>';
+  var form = '<form action="carrito.html" method="get">'+input+input2+boton+'</form>';
+  $(form).appendTo('.tag'+nasa_id);
+}
+
 function agregarCompartir(nasa_id){
   var input = '<input type="hidden" name="nasa_id" value="'+nasa_id+'">'
   var boton = '<button class="btncompartir" type="submit">Compartir</button>';
@@ -219,11 +227,14 @@ function ejecutarConsulta(url){
         if (contador < 10){
           if (recurso.data[0].media_type=='image'){
             agregarImg(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.links[0].href, recurso.data[0].nasa_id);
+            agregarPrecio(recurso.data[0].nasa_id, recurso.data[0].title);
             agregarCompartir(recurso.data[0].nasa_id);
             agregarEtiquetas(recurso.data[0].nasa_id, recurso.data[0].keywords);
           } if (recurso.data[0].media_type=='video'){
             agregarVideo(recurso.data[0].title, recurso.data[0].secondary_creator, recurso.data[0].nasa_id);
             agregarCompartir(recurso.data[0].nasa_id);
+
+            agregarPrecio(recurso.data[0].nasa_id);
             agregarEtiquetas(recurso.data[0].nasa_id, recurso.data[0].keywords);
           }
           contador++;

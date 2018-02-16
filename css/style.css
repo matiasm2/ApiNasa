@@ -31,6 +31,19 @@ header a:link  {
  text-decoration:none;
 }
 
+.thumb {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 4px;  /* Rounded border */
+    padding: 5px; /* Some padding */
+    width: 150px; /* Set a small width */
+}
+
+table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+}
+
 .elemento div{
   text-align: center;
 }
